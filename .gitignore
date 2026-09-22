@@ -1,0 +1,15 @@
+# Local installers and archives
+Miniconda3-latest-Linux-x86_64.sh
+d2l-zh.zip
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Python generated files
+__pycache__/
+*.py[cod]
+
+# Local environment and secrets
+.venv/
+venv/
+.env
