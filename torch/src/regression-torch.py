@@ -23,14 +23,14 @@ data_iter = load_array((features, labels), batch_size)
 # 读取第一批数据；这一步只是取数据，还没有开始训练
 next(iter(data_iter))
 
-net = nn.Sequential(nn.Linear(3, 1))
+net = nn.Sequential(nn.Linear(3, 1)) #创建线性回归模型，输入3 输出1
 
-net[0].weight.data.normal_(0, 0.01)
-net[0].bias.data.fill_(0)
+net[0].weight.data.normal_(0, 0.01) #设置初始值，以平均值0 ，标准差0.01的正态分布随机数初始化权重参数
+net[0].bias.data.fill_(0) #偏置初始化为0
 
-loss = nn.MSELoss()
+loss = nn.MSELoss() #以均方误差作为损失函数
 
-trainer = torch.optim.SGD(net.parameters(), lr=0.03)
+trainer = torch.optim.SGD(net.parameters(), lr=0.03) #使用随机梯度下降算法进行参数更新
 
 num_epochs = 3
 for epoch in range(num_epochs):
