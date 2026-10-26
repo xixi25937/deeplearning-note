@@ -1,25 +1,23 @@
+import argparse
+from pathlib import Path
+
 import pandas as pd
 import torch
 from d2l import torch as d2l
 from torch import nn
 
-DATA_HUB = d2l.DATA_HUB
-DATA_URL = d2l.DATA_URL
-
-DATA_HUB['kaggle_house_train'] = (
-    DATA_URL + 'kaggle_house_pred_train.csv',
-    '585e9cc93e70b39160e7921475f9bcd7d31219ce'
-)
-
-DATA_HUB['kaggle_house_test'] = (
-    DATA_URL + 'kaggle_house_pred_test.csv',
-    'fa19780a7b011d9b009e8bff8e99922a8ee2eb90')
+DEFAULT_DATA_DIR = Path(__file__).resolve().parent / 'data' / 'test'
 
 
-
-def main():
-    train_file = d2l.download('kaggle_house_train', folder='./data')
-    test_file = d2l.download('kaggle_house_test', folder='./data')
+def main(data_dir=DEFAULT_DATA_DIR):
+    data_dir = Path(data_dir)
+    train_file = data_dir / 'train.csv'
+    test_file = data_dir / 'test.csv'
+    if not train_file.is_file() or not test_file.is_file():
+        raise FileNotFoundError(
+            f'Expected train.csv and test.csv in {data_dir}. '
+            'Pass the directory containing the downloaded files with --data-dir.'
+        )
 
     train_data = pd.read_csv(train_file)
     test_data = pd.read_csv(test_file)
@@ -116,4 +114,11 @@ def main():
     
     
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Train on the local house-price CSV files.')
+    parser.add_argument(
+        '--data-dir',
+        type=Path,
+        default=DEFAULT_DATA_DIR,
+        help='directory containing train.csv and test.csv',
+    )
+    main(parser.parse_args().data_dir)
